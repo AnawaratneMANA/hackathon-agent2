@@ -3,10 +3,12 @@ package com.hackathon.hackathon.agent2.controller;
 import com.hackathon.hackathon.agent2.dto.EOQResponseDTO;
 import com.hackathon.hackathon.agent2.dto.InventoryRequestDTO;
 import com.hackathon.hackathon.agent2.dto.InventoryStatusDTO;
+import com.hackathon.hackathon.agent2.dto.ItemListDTO;
 import com.hackathon.hackathon.agent2.service.impl.InventoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -89,6 +91,24 @@ public class InventoryController {
             return ResponseEntity.ok(dto);
         } catch (NoSuchElementException ex) {
             return ResponseEntity.status(404).body(ex.getMessage());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return ResponseEntity.status(500).body("Internal error");
+        }
+    }
+
+    @GetMapping("/items")
+    public ResponseEntity<?> listItems(
+            @RequestHeader(value = "x-sme-code", required = false) String smeCodeHeader,
+            @RequestParam(value = "sme", required = false) String smeQuery
+    ) {
+        String smeCode = (smeCodeHeader != null && !smeCodeHeader.isBlank()) ? smeCodeHeader : smeQuery;
+        if (smeCode == null || smeCode.isBlank()) {
+            return ResponseEntity.badRequest().body("Missing SME identifier: pass x-sme-code header or ?sme=SME_001");
+        }
+        try {
+            List<ItemListDTO> rows = service.listItemsForSme(smeCode);
+            return ResponseEntity.ok(rows);
         } catch (Exception ex) {
             ex.printStackTrace();
             return ResponseEntity.status(500).body("Internal error");

@@ -6,6 +6,7 @@ import com.hackathon.hackathon.agent2.domain.Vendor;
 import com.hackathon.hackathon.agent2.dto.EOQResponseDTO;
 import com.hackathon.hackathon.agent2.dto.InventoryRequestDTO;
 import com.hackathon.hackathon.agent2.dto.InventoryStatusDTO;
+import com.hackathon.hackathon.agent2.dto.ItemListDTO;
 import com.hackathon.hackathon.agent2.proxy.InventoryRepository;
 import com.hackathon.hackathon.agent2.proxy.ItemRepository;
 import com.hackathon.hackathon.agent2.proxy.SMERepository;
@@ -13,6 +14,7 @@ import com.hackathon.hackathon.agent2.proxy.VendorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -133,5 +135,15 @@ public class InventoryService {
         dto.setVendorType(saved.getVendor() != null ? saved.getVendor().getVendorType() : "UNKNOWN");
         dto.setSafetyStock(saved.getSafetyStock());
         return dto;
+    }
+
+    /**
+     * Get a list of items given the sme.
+     * @param smeCode > SME Code.
+     * @return
+     */
+    @Transactional(readOnly = true)
+    public List<ItemListDTO> listItemsForSme(String smeCode) {
+        return inventoryRepository.findItemListBySmeCode(smeCode);
     }
 }
