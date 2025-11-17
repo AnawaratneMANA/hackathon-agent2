@@ -7,6 +7,7 @@ import com.hackathon.hackathon.agent2.dto.EOQResponseDTO;
 import com.hackathon.hackathon.agent2.dto.InventoryRequestDTO;
 import com.hackathon.hackathon.agent2.dto.InventoryStatusDTO;
 import com.hackathon.hackathon.agent2.dto.ItemListDTO;
+import com.hackathon.hackathon.agent2.exception.NotFoundException;
 import com.hackathon.hackathon.agent2.proxy.InventoryRepository;
 import com.hackathon.hackathon.agent2.proxy.ItemRepository;
 import com.hackathon.hackathon.agent2.proxy.SMERepository;
@@ -119,7 +120,7 @@ public class InventoryService {
 
         if (req.getVendorId() != null) {
             Vendor v = vendorRepository.findById(req.getVendorId())
-                    .orElseThrow(() -> new NoSuchElementException("Vendor not found: " + req.getVendorId()));
+                    .orElseThrow(() -> new NotFoundException("400", "Vendor not found: " + req.getVendorId()));
             inv.setVendor(v);
         }
 

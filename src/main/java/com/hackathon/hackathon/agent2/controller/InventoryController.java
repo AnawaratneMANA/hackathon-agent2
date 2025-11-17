@@ -35,14 +35,9 @@ public class InventoryController {
         if (smeCode == null || smeCode.isBlank()) {
             return ResponseEntity.badRequest().body("Missing SME identifier: pass x-sme-code header or ?sme=SME_001");
         }
-        try {
-            InventoryStatusDTO dto = service.getInventoryStatus(smeCode, itemCode);
-            return ResponseEntity.ok(dto);
-        } catch (NoSuchElementException ex) {
-            return ResponseEntity.status(404).body(ex.getMessage());
-        } catch (Exception ex) {
-            return ResponseEntity.status(500).body("Internal error");
-        }
+        InventoryStatusDTO dto = service.getInventoryStatus(smeCode, itemCode);
+        return ResponseEntity.ok(dto);
+
     }
 
     /**
@@ -58,14 +53,8 @@ public class InventoryController {
         if (smeCode == null || smeCode.isBlank()) {
             return ResponseEntity.badRequest().body("Missing SME identifier: pass x-sme-code header or ?sme=SME_001");
         }
-        try {
-            EOQResponseDTO dto = service.computeEOQForItem(smeCode, itemCode);
-            return ResponseEntity.ok(dto);
-        } catch (NoSuchElementException ex) {
-            return ResponseEntity.status(404).body(ex.getMessage());
-        } catch (Exception ex) {
-            return ResponseEntity.status(500).body("Internal error");
-        }
+        EOQResponseDTO dto = service.computeEOQForItem(smeCode, itemCode);
+        return ResponseEntity.ok(dto);
     }
 
     /**
@@ -86,15 +75,8 @@ public class InventoryController {
         if (req.getItemCode() == null || req.getItemCode().isBlank()) {
             req.setItemCode(itemCode);
         }
-        try {
-            InventoryStatusDTO dto = service.upsertInventory(smeCode, req);
-            return ResponseEntity.ok(dto);
-        } catch (NoSuchElementException ex) {
-            return ResponseEntity.status(404).body(ex.getMessage());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return ResponseEntity.status(500).body("Internal error");
-        }
+        InventoryStatusDTO dto = service.upsertInventory(smeCode, req);
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/items")
@@ -106,12 +88,7 @@ public class InventoryController {
         if (smeCode == null || smeCode.isBlank()) {
             return ResponseEntity.badRequest().body("Missing SME identifier: pass x-sme-code header or ?sme=SME_001");
         }
-        try {
-            List<ItemListDTO> rows = service.listItemsForSme(smeCode);
-            return ResponseEntity.ok(rows);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return ResponseEntity.status(500).body("Internal error");
-        }
+        List<ItemListDTO> rows = service.listItemsForSme(smeCode);
+        return ResponseEntity.ok(rows);
     }
 }
