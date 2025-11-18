@@ -8,6 +8,7 @@ public class ItemListDTO {
     private Integer leadTimeDays;
     private Double daysOfCover;
     private String vendorType;
+    private Integer safetyStocks;
 
     public ItemListDTO(
             String itemId,
@@ -16,7 +17,8 @@ public class ItemListDTO {
             Double dailyConsumption,
             Integer leadTimeDays,
             Double daysOfCover,
-            String vendorType
+            String vendorType,
+            Integer safetyStocks
     ) {
         this.itemId = itemId;
         this.itemName = itemName;
@@ -25,6 +27,7 @@ public class ItemListDTO {
         this.leadTimeDays = leadTimeDays;
         this.daysOfCover = daysOfCover;
         this.vendorType = vendorType;
+        this.safetyStocks = safetyStocks;
     }
 
     public String getItemId() {
@@ -81,6 +84,14 @@ public class ItemListDTO {
 
     public void setVendorType(String vendorType) {
         this.vendorType = vendorType;
+    }
+
+    public Integer getSafetyStocks() {
+        return safetyStocks;
+    }
+
+    public void setSafetyStocks(Integer safetyStocks) {
+        this.safetyStocks = safetyStocks;
     }
 }
 
